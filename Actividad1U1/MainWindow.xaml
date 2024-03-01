@@ -5,8 +5,61 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Actividad1U1"
         mc:Ignorable="d"
-        Title="MainWindow"  Height="450" Width="800">
-    <Grid>
+        Title="MainWindow"  Height="500" Width="800" Background="#b0c2f2">
+    <Window.DataContext>
+        <local:Panaderia x:Name="panaderia"></local:Panaderia>
+    </Window.DataContext>
+    <DockPanel>
+        <DockPanel.Background>
+            <ImageBrush Opacity="0.2" ImageSource="https://previews.123rf.com/images/bettystrange/bettystrange1611/bettystrange161100284/67491103-modelo-incons%C3%BAtil-de-la-panader%C3%ADa-l%C3%ADnea-contorno-el-estilo-de-dibujo-pan-y-bollos-textura.jpg"></ImageBrush>
+        </DockPanel.Background>
+        <StackPanel DockPanel.Dock="Top" Opacity="0.7" Background="pink">
+            <Label  FontFamily="Arial" FontWeight="Bold" FontSize="20" HorizontalContentAlignment="center">Panadería Salazar</Label>
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.6*"></ColumnDefinition>
+                <ColumnDefinition Width="0.4*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!--seccion izquierda-->
+            <StackPanel Grid.Column="0" Margin="10">
+                <Label FontSize="15" HorizontalContentAlignment="Center">
+                    Seleccione un producto para agregarlo a la lista de compras
+                </Label>
+                <DataGrid Name="dtgProductos" AutoGenerateColumns="False" Grid.Column="0" ItemsSource="{Binding PanesEnVenta}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="false">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="50">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Imagen}" Width="50" Height="50"></Image>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn FontSize="15" Width="0.5*" Binding="{Binding Nombre}" Header="Nombre" ></DataGridTextColumn>
+                        <DataGridTextColumn FontSize="15" Width="0.3*" Binding="{Binding Precio, StringFormat='$0.00'}" Header="Precio" ></DataGridTextColumn>
+                        <DataGridTextColumn FontSize="15" Width="0.2*" Binding="{Binding Cantidad}" Header="Cantidad" ></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button Background="#ffda9e" Name="btnAgregar" FontSize="15" Margin="0,10,0,0" Width="200" Command="{Binding AgregarCommand}" CommandParameter="{Binding ElementName=dtgProductos, Path=SelectedItem}">Agregar a la compra</Button>
+               
+            </StackPanel>
+            <!--seccion derecha-->
+            <DockPanel Grid.Column="1">
 
-    </Grid>
+                <TextBlock Margin="10" FontSize="20" HorizontalAlignment="Center" DockPanel.Dock="Bottom">Monto a pagar: <TextBlock Text="{Binding MontoTotal, StringFormat='$0.00'}"></TextBlock></TextBlock>
+
+                <Button Background="#ffda9e" FontSize="15" DockPanel.Dock="Bottom" Margin="0,10,0,0" Width="200" Command="{Binding EliminarCommand}" CommandParameter="{Binding ElementName=ListaCompra, Path=SelectedItem}">Eliminar de la compra</Button>
+                <Button Background="#ffda9e" Name="btnFinalizar" FontSize="15" DockPanel.Dock="Bottom" Margin="0,10,0,0" Width="200" Command="{Binding ComprarCommand}">Finalizar compra</Button>
+                <ListBox Margin="10" Name="ListaCompra" HorizontalContentAlignment="Center" ItemsSource="{Binding ListaCompra}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="0,10,0,0"  FontSize="15" Text="{Binding Nombre}"><TextBlock Text=" : "><TextBlock Text="{Binding Precio, StringFormat='$0.00'}"></TextBlock></TextBlock></TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+               
+            </DockPanel>
+
+        </Grid>
+    </DockPanel>
 </Window>
